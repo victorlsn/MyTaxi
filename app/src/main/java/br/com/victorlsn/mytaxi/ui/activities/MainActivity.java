@@ -19,8 +19,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import br.com.victorlsn.mytaxi.R;
+import br.com.victorlsn.mytaxi.interfaces.CarListMVP;
+import br.com.victorlsn.mytaxi.presenters.CarListPresenterImplementation;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CarListMVP.View {
+
+    CarListMVP.Presenter presenter;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -60,6 +64,13 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        if (presenter == null) {
+            presenter = new CarListPresenterImplementation();
+            presenter.attachView(this);
+        }
+
+        presenter.requestVehicles();
 
     }
 
@@ -143,5 +154,20 @@ public class MainActivity extends AppCompatActivity {
             // Show 3 total pages.
             return 3;
         }
+    }
+
+    @Override
+    public boolean showProgressBar(boolean show, String message) {
+        return false;
+    }
+
+    @Override
+    public boolean showToast(String message, int duration) {
+        return false;
+    }
+
+    @Override
+    public void receiveVehiclesList() {
+
     }
 }
