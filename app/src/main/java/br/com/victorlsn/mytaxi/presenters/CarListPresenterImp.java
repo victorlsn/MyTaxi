@@ -1,10 +1,15 @@
 package br.com.victorlsn.mytaxi.presenters;
 
+import android.util.Log;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import br.com.victorlsn.mytaxi.beans.Car;
+import br.com.victorlsn.mytaxi.events.CarListPopulatedEvent;
 import br.com.victorlsn.mytaxi.interfaces.BaseMVP;
 import br.com.victorlsn.mytaxi.interfaces.CarListMVP;
 import br.com.victorlsn.mytaxi.models.CarListModelImp;
@@ -44,6 +49,11 @@ public class CarListPresenterImp implements CarListMVP.Presenter {
     public void requestVehiclesSuccessfully(List<Car> cars) {
         view.showProgressBar(false, null);
         view.receiveVehiclesList(cars);
+        EventBus.getDefault().post(new CarListPopulatedEvent(cars));
+
+        for (Car car: cars) {
+            Log.d("Car: ", car.toString());
+        }
     }
 
     @Override

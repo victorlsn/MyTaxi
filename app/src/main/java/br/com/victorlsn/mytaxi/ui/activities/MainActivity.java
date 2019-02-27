@@ -1,14 +1,16 @@
 package br.com.victorlsn.mytaxi.ui.activities;
 
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 
-import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import br.com.victorlsn.mytaxi.R;
+import br.com.victorlsn.mytaxi.events.CarSelectedEvent;
 import br.com.victorlsn.mytaxi.interfaces.CarListMVP;
 import br.com.victorlsn.mytaxi.ui.adapters.PageFragmentAdapter;
 import br.com.victorlsn.mytaxi.ui.fragments.CarListFragment;
@@ -43,6 +45,8 @@ public class MainActivity extends BaseActivity {
         setupTabLayout();
         setupTabClick();
 //        actionBar.setTitle("THE IDDOG");
+
+        EventBus.getDefault().register(this);
     }
 
     private void prepareActionBar() {
@@ -73,7 +77,15 @@ public class MainActivity extends BaseActivity {
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(0).setIcon(getResources().getDrawable(R.drawable.md_ic_car));
         tabLayout.getTabAt(1).setIcon(getResources().getDrawable(R.drawable.md_ic_map));
+    }
 
+    @Subscribe
+    public void onEvent(CarSelectedEvent event) {
+        if (event.getCar() != null) {
+            invalidateOptionsMenu();
+            viewPager.setCurrentItem(1);
+            carMapFragment.zoomInCoordinates(event.getCar().getCoordinate());
+        }
     }
 
     private void setupTabClick() {

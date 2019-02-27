@@ -5,11 +5,14 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -18,15 +21,27 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.List;
+
 import br.com.victorlsn.mytaxi.R;
+import br.com.victorlsn.mytaxi.beans.Car;
+import br.com.victorlsn.mytaxi.beans.Coordinate;
+import br.com.victorlsn.mytaxi.events.CarListPopulatedEvent;
 
 /**
  * Created by victorlsn on 27/02/19.
  */
 
 public class CarMapFragment extends BaseFragment {
+
+    GoogleMap map;
+    List<Car> carList;
 
     public CarMapFragment() {
     }
@@ -35,18 +50,17 @@ public class CarMapFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        EventBus.getDefault().register(this);
     }
 
     @Override
     protected int layoutToInflate() {return R.layout.car_map_fragment;}
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.car_map_fragment, container, false);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.frg);  //use SuppoprtMapFragment for using in fragment instead of activity  MapFragment = activity   SupportMapFragment = fragment
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.frg);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap mMap) {
@@ -54,33 +68,53 @@ public class CarMapFragment extends BaseFragment {
 
                 mMap.clear(); //clear old markers
 
-                CameraPosition googlePlex = CameraPosition.builder()
-                        .target(new LatLng(37.4219999,-122.0862462))
-                        .zoom(10)
-                        .bearing(0)
-                        .tilt(45)
-                        .build();
+                LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                builder.include(new LatLng(53.394655, 9.757589)).include(new LatLng(53.694865, 10.099891));
 
-                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 10000, null);
 
-                mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(37.4219999, -122.0862462))
-                        .title("Spider Man")
-                        .icon(bitmapDescriptorFromVector(getActivity(),R.drawable.ic_taxi_marker)));
+                mMap.setLatLngBoundsForCameraTarget(builder.build());
 
-                mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(37.4629101,-122.2449094))
-                        .title("Iron Man")
-                        .snippet("His Talent : Plenty of money"));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 0));
 
-                mMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(37.3092293,-122.1136845))
-                        .title("Captain America"));
+                mMap.setMinZoomPreference(10.0f);
+                mMap.setMaxZoomPreference(20.0f);
+
+                map = mMap;
+
+
             }
         });
+    }
+
+    @Subscribe
+    public void onEvent(CarListPopulatedEvent event) {
+        if (event.getCarList() != null) {
+            this.carList = event.getCarList();
+            populateMap(carList);
+        }
+    }
+
+    private void populateMap(List<Car> cars) {
+        for (Car car : cars) {
+            MarkerOptions carMarker = new MarkerOptions()
+                    .position(new LatLng(car.getCoordinate().getLatitude(), car.getCoordinate().getLongitude()))
+                    .title(String.valueOf(car.getId()))
+                    .icon(bitmapDescriptorFromVector(getActivity(),
+                            car.getFleetType().equals("TAXI") ? R.drawable.ic_taxi_marker : R.drawable.ic_car_marker))
+                    .rotation((float)(car.getHeading()))
+                    .flat(true);
 
 
-        return rootView;
+            map.addMarker(carMarker);
+        }
+    }
+
+//    private Bitmap getBitmapSizedForZoom(float zoom, Car car) {
+//        switch ()
+//    }
+
+    public void zoomInCoordinates(Coordinate coordinate) {
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(coordinate.getLatitude(), coordinate.getLongitude()), 15.0f));
     }
 
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {

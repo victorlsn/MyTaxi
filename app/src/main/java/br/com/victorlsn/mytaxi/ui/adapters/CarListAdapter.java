@@ -15,11 +15,14 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import br.com.victorlsn.mytaxi.R;
 import br.com.victorlsn.mytaxi.beans.Car;
 import br.com.victorlsn.mytaxi.beans.Coordinate;
+import br.com.victorlsn.mytaxi.events.CarSelectedEvent;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -52,9 +55,7 @@ public class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.ViewHold
 
     @Override
     public CarListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // create a new view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_cars, parent, false);
-        // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -74,13 +75,12 @@ public class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.ViewHold
             holder.icon.setImageResource(R.drawable.ic_car);
         }
 
-        // Here you apply the animation when the view is bound
         setAnimation(holder.parentLayout, position);
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mOnItemClickListener.onItemClick(view, car, position);
+                EventBus.getDefault().post(new CarSelectedEvent(car));
             }
         });
 

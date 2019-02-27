@@ -56,4 +56,14 @@ public class Car {
     public void setEstimatedAddress(String estimatedAddress) {
         this.estimatedAddress = estimatedAddress;
     }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "id=" + id +
+                ", coordinate=" + coordinate +
+                ", fleetType='" + fleetType + '\'' +
+                ", heading=" + heading +
+                '}';
+    }
 }

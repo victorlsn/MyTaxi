@@ -55,36 +55,6 @@ public class CarListFragment extends BaseFragment implements CarListMVP.View {
         presenter.requestVehicles();
     }
 
-//    @Subscribe
-//    public void onEvent(NetworkConnectedEvent event) {
-//        if (getView() != null) {
-//            isViewShown = true;
-//            initPresenter();
-//            if (isVisibleToUser) {
-//                if (images.size() == 0) {
-//                    presenter.requestFeed(token, category);
-//                }
-//            }
-//        }
-//    }
-
-//    @Override
-//    public void setUserVisibleHint(boolean isVisibleToUser) {
-//        super.setUserVisibleHint(isVisibleToUser);
-//        this.isVisibleToUser = isVisibleToUser;
-//
-//        if (getView() != null) {
-//            isViewShown = true;
-//            initPresenter();
-//
-//            if (isVisibleToUser) {
-//                if (images.size() == 0) {
-//                    presenter.requestFeed(token, category);
-//                }
-//            }
-//        }
-//    }
-
     private void initPresenter() {
         if (null == presenter) {
             presenter = new CarListPresenterImp();
@@ -102,15 +72,12 @@ public class CarListFragment extends BaseFragment implements CarListMVP.View {
     private void configAdapter(List<Car> cars) {
         adapter = new CarListAdapter(getActivity(), cars);
         recyclerView.setAdapter(adapter);
-//        adapter.setOnItemClickListener(new CarListAdapter.onItemClickListener() {
-//            @Override
-//            public void onItemClickListener(View view, String url) {
-//                Intent intent = new Intent(getActivity(), ImageViewerActivity.class);
-//                intent.putExtra("imageUrl", url);
-//                ActivityOptionsCompat options = ActivityOptionsCompat.
-//                        makeSceneTransitionAnimation(getActivity(), view, "TRANSITION");
-//                ActivityCompat.startActivity(getActivity(), intent, options.toBundle());            }
-//        });
+        adapter.setOnItemClickListener(new CarListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, Car obj, int position) {
+
+            }
+        });
     }
 
     @Override
