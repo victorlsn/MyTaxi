@@ -12,6 +12,7 @@ import br.com.victorlsn.mytaxi.R;
 import br.com.victorlsn.mytaxi.interfaces.CarListMVP;
 import br.com.victorlsn.mytaxi.ui.adapters.PageFragmentAdapter;
 import br.com.victorlsn.mytaxi.ui.fragments.CarListFragment;
+import br.com.victorlsn.mytaxi.ui.fragments.CarMapFragment;
 import butterknife.BindView;
 
 public class MainActivity extends BaseActivity {
@@ -27,7 +28,9 @@ public class MainActivity extends BaseActivity {
 
 
     private android.support.v7.app.ActionBar actionBar;
+
     private CarListFragment carListFragment;
+    private CarMapFragment carMapFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,7 +52,7 @@ public class MainActivity extends BaseActivity {
 
     private void setupFragments() {
         if (carListFragment == null) carListFragment = new CarListFragment();
-
+        if (carMapFragment == null) carMapFragment = new CarMapFragment();
     }
 
     /**
@@ -58,7 +61,8 @@ public class MainActivity extends BaseActivity {
     private void setupViewPager() {
         PageFragmentAdapter adapter = new PageFragmentAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(carListFragment, "Car List");
+        adapter.addFragment(carListFragment, "Cars List");
+        adapter.addFragment(carMapFragment, "Cars Map");
         viewPager.setAdapter(adapter);
     }
 
@@ -67,8 +71,8 @@ public class MainActivity extends BaseActivity {
      */
     private void setupTabLayout() {
         tabLayout.setupWithViewPager(viewPager);
-//        tabLayout.getTabAt(0).setIcon(getResources().getDrawable(R.drawable.ic_husky));
-//        tabLayout.getTabAt(1).setIcon(getResources().getDrawable(R.drawable.ic_labrador));
+        tabLayout.getTabAt(0).setIcon(getResources().getDrawable(R.drawable.md_ic_car));
+        tabLayout.getTabAt(1).setIcon(getResources().getDrawable(R.drawable.md_ic_map));
 
     }
 
