@@ -1,10 +1,13 @@
 package br.com.victorlsn.mytaxi.interfaces;
 
+import com.google.gson.JsonElement;
+
 import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Map;
 
+import br.com.victorlsn.mytaxi.beans.Response;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
@@ -17,5 +20,5 @@ import retrofit2.http.QueryMap;
 public interface AppRestEndpoint {
     @Headers("Content-Type: application/json")
     @GET("/")
-    Call<JSONObject> getVehiclesList(@QueryMap Map<String, String> params);
+    Call<Response> getVehiclesList(@QueryMap Map<String, String> params);
 }

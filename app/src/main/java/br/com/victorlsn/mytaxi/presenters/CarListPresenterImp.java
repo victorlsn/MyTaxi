@@ -1,22 +1,24 @@
 package br.com.victorlsn.mytaxi.presenters;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import br.com.victorlsn.mytaxi.beans.Car;
 import br.com.victorlsn.mytaxi.interfaces.BaseMVP;
 import br.com.victorlsn.mytaxi.interfaces.CarListMVP;
-import br.com.victorlsn.mytaxi.models.CarListModelImplementation;
+import br.com.victorlsn.mytaxi.models.CarListModelImp;
 
 /**
  * Created by victorlsn on 26/02/19.
  */
 
-public class CarListPresenterImplementation implements CarListMVP.Presenter {
+public class CarListPresenterImp implements CarListMVP.Presenter {
     private CarListMVP.Model model;
     private CarListMVP.View view;
 
-    public CarListPresenterImplementation() {
-        this.model = new CarListModelImplementation(this);
+    public CarListPresenterImp() {
+        this.model = new CarListModelImp(this);
     }
 
     public void requestVehicles() {
@@ -39,12 +41,13 @@ public class CarListPresenterImplementation implements CarListMVP.Presenter {
     }
 
     @Override
-    public void requestVehiclesSuccessfully() {
-
+    public void requestVehiclesSuccessfully(List<Car> cars) {
+        view.showProgressBar(false, null);
+        view.receiveVehiclesList(cars);
     }
 
     @Override
-    public void requestVehiclesFailure() {
+    public void requestVehiclesFailure(String error) {
 
     }
 
