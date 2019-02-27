@@ -8,18 +8,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -42,6 +38,7 @@ public class CarMapFragment extends BaseFragment {
 
     GoogleMap map;
     List<Car> carList;
+    float currentZoom = 0.0f;
 
     public CarMapFragment() {
     }
@@ -63,10 +60,8 @@ public class CarMapFragment extends BaseFragment {
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.frg);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
-            public void onMapReady(GoogleMap mMap) {
+            public void onMapReady(final GoogleMap mMap) {
                 mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-                mMap.clear(); //clear old markers
 
                 LatLngBounds.Builder builder = new LatLngBounds.Builder();
                 builder.include(new LatLng(53.394655, 9.757589)).include(new LatLng(53.694865, 10.099891));
@@ -80,8 +75,6 @@ public class CarMapFragment extends BaseFragment {
                 mMap.setMaxZoomPreference(20.0f);
 
                 map = mMap;
-
-
             }
         });
     }
@@ -95,13 +88,14 @@ public class CarMapFragment extends BaseFragment {
     }
 
     private void populateMap(List<Car> cars) {
+        map.clear();
         for (Car car : cars) {
             MarkerOptions carMarker = new MarkerOptions()
                     .position(new LatLng(car.getCoordinate().getLatitude(), car.getCoordinate().getLongitude()))
                     .title(String.valueOf(car.getId()))
                     .icon(bitmapDescriptorFromVector(getActivity(),
                             car.getFleetType().equals("TAXI") ? R.drawable.ic_taxi_marker : R.drawable.ic_car_marker))
-                    .rotation((float)(car.getHeading()))
+                    .rotation((float) (car.getHeading()))
                     .flat(true);
 
 
@@ -109,18 +103,17 @@ public class CarMapFragment extends BaseFragment {
         }
     }
 
-//    private Bitmap getBitmapSizedForZoom(float zoom, Car car) {
-//        switch ()
-//    }
-
     public void zoomInCoordinates(Coordinate coordinate) {
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(coordinate.getLatitude(), coordinate.getLongitude()), 15.0f));
     }
 
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
-        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
-        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        int scaledWidth = (vectorDrawable.getIntrinsicWidth()/2);
+        int scaledHeight = (vectorDrawable.getIntrinsicHeight()/2);
+        vectorDrawable.setBounds(0, 0, scaledWidth, scaledHeight);
+        Bitmap bitmap = Bitmap.createBitmap(scaledWidth, scaledHeight, Bitmap.Config.ARGB_8888);
+
         Canvas canvas = new Canvas(bitmap);
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);

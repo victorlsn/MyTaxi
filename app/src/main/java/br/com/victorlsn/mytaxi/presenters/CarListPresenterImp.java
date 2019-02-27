@@ -58,7 +58,9 @@ public class CarListPresenterImp implements CarListMVP.Presenter {
 
     @Override
     public void requestVehiclesFailure(String error) {
-
+        // TODO showErrorToast
+        view.showProgressBar(false, null);
+        view.receiveVehiclesList(null);
     }
 
     @Override

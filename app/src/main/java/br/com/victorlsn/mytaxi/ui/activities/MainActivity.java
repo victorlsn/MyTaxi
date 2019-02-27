@@ -4,32 +4,27 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import br.com.victorlsn.mytaxi.R;
 import br.com.victorlsn.mytaxi.events.CarSelectedEvent;
-import br.com.victorlsn.mytaxi.interfaces.CarListMVP;
 import br.com.victorlsn.mytaxi.ui.adapters.PageFragmentAdapter;
 import br.com.victorlsn.mytaxi.ui.fragments.CarListFragment;
 import br.com.victorlsn.mytaxi.ui.fragments.CarMapFragment;
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity {
+/**
+ * Created by victorlsn on 27/02/19.
+ */
 
-    CarListMVP.Presenter presenter;
+public class MainActivity extends BaseActivity {
 
     @BindView(R.id.tabs)
     TabLayout tabLayout;
     @BindView(R.id.viewPager)
     ViewPager viewPager;
-    @BindView(R.id.toolbar_viewpager)
-    Toolbar toolbar;
-
-
-    private android.support.v7.app.ActionBar actionBar;
 
     private CarListFragment carListFragment;
     private CarMapFragment carMapFragment;
@@ -39,19 +34,12 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        prepareActionBar();
         setupFragments();
         setupViewPager();
         setupTabLayout();
         setupTabClick();
-//        actionBar.setTitle("THE IDDOG");
 
         EventBus.getDefault().register(this);
-    }
-
-    private void prepareActionBar() {
-        setSupportActionBar(toolbar);
-        actionBar = getSupportActionBar();
     }
 
     private void setupFragments() {

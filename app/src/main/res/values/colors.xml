@@ -2,8 +2,8 @@
 <resources>
     <color name="grey_medium">#BDBFC1</color>
     <color name="grey_soft">#EEEEEE</color>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="colorAccentLight">#BBBBBB</color>
+    <color name="colorPrimary">#FDC300</color>
+    <color name="colorPrimaryDark">#FDAA00</color>
+    <color name="colorAccent">#4A4A4A</color>
+    <color name="colorAccentLight">#000000</color>
 </resources>

@@ -1,10 +1,5 @@
 package br.com.victorlsn.mytaxi.interfaces;
 
-import com.google.gson.JsonElement;
-
-import org.json.JSONObject;
-
-import java.util.List;
 import java.util.Map;
 
 import br.com.victorlsn.mytaxi.beans.Response;

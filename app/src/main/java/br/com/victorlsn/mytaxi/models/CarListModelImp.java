@@ -1,11 +1,5 @@
 package br.com.victorlsn.mytaxi.models;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
-import org.json.JSONObject;
-
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +13,6 @@ import retrofit2.Response;
 /**
  * Created by victorlsn on 26/02/19.
  */
-import br.com.victorlsn.mytaxi.beans.*;
 
 
 public class CarListModelImp implements CarListMVP.Model {

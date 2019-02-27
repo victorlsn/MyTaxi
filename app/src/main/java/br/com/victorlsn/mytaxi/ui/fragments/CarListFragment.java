@@ -3,13 +3,12 @@ package br.com.victorlsn.mytaxi.ui.fragments;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import br.com.victorlsn.mytaxi.R;
@@ -25,8 +24,14 @@ import butterknife.BindView;
  */
 
 public class CarListFragment extends BaseFragment implements CarListMVP.View {
+
+
+    @BindView(R.id.empty_state_layout)
+    LinearLayout emptyStateLinearLayout;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
     private CarListAdapter adapter;
     private CarListMVP.Presenter presenter;
     private ProgressDialog progressDialog;
@@ -50,7 +55,7 @@ public class CarListFragment extends BaseFragment implements CarListMVP.View {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initRecyclerView();
+        initSwipeRefreshLayout();
         initPresenter();
         presenter.requestVehicles();
     }
@@ -69,15 +74,19 @@ public class CarListFragment extends BaseFragment implements CarListMVP.View {
         recyclerView.setHasFixedSize(false);
     }
 
+    private void initSwipeRefreshLayout() {
+//        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.requestVehicles();
+            }
+        });
+    }
+
     private void configAdapter(List<Car> cars) {
         adapter = new CarListAdapter(getActivity(), cars);
         recyclerView.setAdapter(adapter);
-        adapter.setOnItemClickListener(new CarListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, Car obj, int position) {
-
-            }
-        });
     }
 
     @Override
@@ -105,8 +114,16 @@ public class CarListFragment extends BaseFragment implements CarListMVP.View {
 
     @Override
     public void receiveVehiclesList(List<Car> cars) {
+        swipeRefreshLayout.setRefreshing(false);
         if (recyclerView != null && cars != null) {
+            emptyStateLinearLayout.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            initRecyclerView();
             configAdapter(cars);
+        }
+        else {
+            recyclerView.setVisibility(View.INVISIBLE);
+            emptyStateLinearLayout.setVisibility(View.VISIBLE);
         }
     }
 }
