@@ -1,5 +1,8 @@
 package br.com.victorlsn.mytaxi.models;
 
+import android.content.Context;
+import android.util.Log;
+
 import java.util.List;
 import java.util.Map;
 
@@ -22,21 +25,26 @@ public class CarListModelImp implements CarListMVP.Model {
         this.presenter = presenter;
     }
 
-    public void getVehicles(Map<String, String> coordinates) {
-        Controller.getInstance().doApiCall().getVehiclesList(coordinates).enqueue(new Callback<br.com.victorlsn.mytaxi.beans.Response>() {
-            @Override
-            public void onResponse(Call<br.com.victorlsn.mytaxi.beans.Response> call, Response<br.com.victorlsn.mytaxi.beans.Response> response) {
-                if (response.code() == 200 && response.body() != null) {
-                    List<Car> carList = response.body().getCars();
+    public void getVehicles(Context context, Map<String, String> coordinates) {
+        try {
+            Controller.getInstance().doApiCall(context).getVehiclesList(coordinates).enqueue(new Callback<br.com.victorlsn.mytaxi.beans.Response>() {
+                @Override
+                public void onResponse(Call<br.com.victorlsn.mytaxi.beans.Response> call, Response<br.com.victorlsn.mytaxi.beans.Response> response) {
+                    if (response.code() == 200 && response.body() != null) {
+                        List<Car> carList = response.body().getCars();
 
-                    presenter.requestVehiclesSuccessfully(carList);
+                        presenter.requestVehiclesSuccessfully(carList);
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<br.com.victorlsn.mytaxi.beans.Response> call, Throwable t) {
-                presenter.requestVehiclesFailure(t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<br.com.victorlsn.mytaxi.beans.Response> call, Throwable t) {
+                    presenter.requestVehiclesFailure(t.getMessage());
+                }
+            });
+        }
+        catch (Exception e) {
+            presenter.requestVehiclesFailure(null);
+        }
     }
 }

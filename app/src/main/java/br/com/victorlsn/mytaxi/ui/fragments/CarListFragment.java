@@ -17,6 +17,7 @@ import br.com.victorlsn.mytaxi.interfaces.CarListMVP;
 import br.com.victorlsn.mytaxi.presenters.CarListPresenterImp;
 import br.com.victorlsn.mytaxi.ui.adapters.CarListAdapter;
 import br.com.victorlsn.mytaxi.ui.widget.VerticalSpaceItemDecoration;
+import br.com.victorlsn.mytaxi.util.AppTools;
 import butterknife.BindView;
 
 /**
@@ -53,7 +54,7 @@ public class CarListFragment extends BaseFragment implements CarListMVP.View {
 
         initSwipeRefreshLayout();
         initPresenter();
-        presenter.requestVehicles();
+        presenter.requestVehicles(getContext());
     }
 
     private void initPresenter() {
@@ -71,18 +72,17 @@ public class CarListFragment extends BaseFragment implements CarListMVP.View {
     }
 
     private void initSwipeRefreshLayout() {
-//        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                presenter.requestVehicles();
+                presenter.requestVehicles(getContext());
             }
         });
     }
 
     private void configAdapter(List<Car> cars) {
         adapter = new CarListAdapter(getActivity(), cars);
-        adapter.setHasStableIds(true);
+//        adapter.setHasStableIds(true);
         recyclerView.setAdapter(adapter);
     }
 
@@ -105,7 +105,7 @@ public class CarListFragment extends BaseFragment implements CarListMVP.View {
 
     @Override
     public boolean showToast(String message, int duration) {
-//        AppTools.showToast(getActivity(), message, duration);
+        AppTools.showToast(getActivity(), message, duration);
         return true;
     }
 

@@ -1,6 +1,8 @@
 package br.com.victorlsn.mytaxi.presenters;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -26,7 +28,14 @@ public class CarListPresenterImp implements CarListMVP.Presenter {
         this.model = new CarListModelImp(this);
     }
 
-    public void requestVehicles() {
+    @Override
+    public boolean attachView(BaseMVP.View view) {
+        if (view == null) return false;
+        this.view = (CarListMVP.View) view;
+        return true;
+    }
+
+    public void requestVehicles(Context context) {
         try {
             view.showProgressBar(true, null);
 
@@ -35,12 +44,10 @@ public class CarListPresenterImp implements CarListMVP.Presenter {
             coordinates.put("p1Lon", "9.757589");
             coordinates.put("p2Lat", "53.394655");
             coordinates.put("p2Lon", "10.099891");
-
-
-            model.getVehicles(coordinates);
+            model.getVehicles(context, coordinates);
         }
         catch (Exception e) {
-
+            Log.e("Error", e.getMessage());
         }
 
     }
@@ -58,15 +65,10 @@ public class CarListPresenterImp implements CarListMVP.Presenter {
 
     @Override
     public void requestVehiclesFailure(String error) {
-        // TODO showErrorToast
+        if (error != null) {
+            view.showToast(error, Toast.LENGTH_SHORT);
+        }
         view.showProgressBar(false, null);
         view.receiveVehiclesList(null);
-    }
-
-    @Override
-    public boolean attachView(BaseMVP.View view) {
-        if (view == null) return false;
-        this.view = (CarListMVP.View) view;
-        return true;
     }
 }

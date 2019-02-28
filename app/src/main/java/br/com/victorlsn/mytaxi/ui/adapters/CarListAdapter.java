@@ -34,7 +34,7 @@ public class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.ViewHold
 
     private List<Car> cars;
 
-    private Context ctx;
+    private Context context;
 
     private OnItemClickListener mOnItemClickListener;
     /**
@@ -46,7 +46,7 @@ public class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.ViewHold
     public CarListAdapter(Context context, List<Car> cars) {
         this.cars = cars;
 
-        ctx = context;
+        this.context = context;
     }
 
     public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
@@ -86,7 +86,7 @@ public class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.ViewHold
         });
 
         if (car.getEstimatedAddress() == null) {
-            new ReverseGeocodingTask(ctx, holder, car).execute(car.getCoordinate());
+            new ReverseGeocodingTask(context, holder, car).execute(car.getCoordinate());
         }
         else {
             holder.address.setText(car.getEstimatedAddress());
@@ -105,7 +105,7 @@ public class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.ViewHold
     private void setAnimation(View viewToAnimate, int position) {
         // If the bound view wasn't previously displayed on screen, it's animated
         if (position > lastPosition) {
-            Animation animation = AnimationUtils.loadAnimation(ctx, R.anim.slide_in_left);
+            Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_in_left);
             viewToAnimate.startAnimation(animation);
             lastPosition = position;
         }
@@ -140,13 +140,13 @@ public class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.ViewHold
     // AsyncTask encapsulating the reverse-geocoding API.  Since the geocoder API is blocked,
 // we do not want to invoke it from the UI thread.
     static class ReverseGeocodingTask extends AsyncTask<Coordinate, Void, String> {
-        Context ctx;
+        Context context;
         ViewHolder viewHolder;
         Car car;
 
         public ReverseGeocodingTask(Context context, ViewHolder viewHolder, Car car) {
             super();
-            ctx = context;
+            this.context = context;
             this.viewHolder = viewHolder;
             this.car = car;
         }
@@ -155,7 +155,7 @@ public class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.ViewHold
         protected String doInBackground(Coordinate... params) {
             Coordinate coordinate = params[0];
             try {
-                Geocoder geoCoder = new Geocoder(ctx);
+                Geocoder geoCoder = new Geocoder(context);
                 List<Address> matches = geoCoder.getFromLocation(coordinate.getLatitude(), coordinate.getLongitude(), 1);
                 Address bestMatch = (matches.isEmpty() ? null : matches.get(0));
                 if (bestMatch != null) {

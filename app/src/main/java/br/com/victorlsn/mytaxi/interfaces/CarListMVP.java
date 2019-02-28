@@ -1,5 +1,7 @@
 package br.com.victorlsn.mytaxi.interfaces;
 
+import android.content.Context;
+
 import java.util.List;
 import java.util.Map;
 
@@ -11,11 +13,11 @@ import br.com.victorlsn.mytaxi.beans.Car;
 
 public interface CarListMVP {
     interface Model {
-        void getVehicles(Map<String, String> coordinates);
+        void getVehicles(Context context, Map<String, String> coordinates);
     }
 
     interface Presenter extends BaseMVP.Presenter {
-        void requestVehicles();
+        void requestVehicles(Context context);
 
         void requestVehiclesSuccessfully(List<Car> cars);
 
