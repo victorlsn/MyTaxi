@@ -57,6 +57,7 @@ public class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.ViewHold
     public CarListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_cars, parent, false);
         ViewHolder vh = new ViewHolder(v);
+        vh.setIsRecyclable(false);
         return vh;
     }
 
@@ -94,6 +95,11 @@ public class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.ViewHold
 
     public Car getItem(int position) {
         return cars.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return cars.get(position).getId();
     }
 
     private void setAnimation(View viewToAnimate, int position) {

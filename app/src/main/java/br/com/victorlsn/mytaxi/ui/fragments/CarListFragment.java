@@ -45,10 +45,6 @@ public class CarListFragment extends BaseFragment implements CarListMVP.View {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        if (!EventBus.getDefault().isRegistered(this)) {
-//            EventBus.getDefault().register(this);
-//        }
     }
 
     @Override
@@ -71,7 +67,7 @@ public class CarListFragment extends BaseFragment implements CarListMVP.View {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new VerticalSpaceItemDecoration(24));
-        recyclerView.setHasFixedSize(false);
+        recyclerView.setHasFixedSize(true);
     }
 
     private void initSwipeRefreshLayout() {
@@ -86,6 +82,7 @@ public class CarListFragment extends BaseFragment implements CarListMVP.View {
 
     private void configAdapter(List<Car> cars) {
         adapter = new CarListAdapter(getActivity(), cars);
+        adapter.setHasStableIds(true);
         recyclerView.setAdapter(adapter);
     }
 
@@ -118,7 +115,9 @@ public class CarListFragment extends BaseFragment implements CarListMVP.View {
         if (recyclerView != null && cars != null) {
             emptyStateLinearLayout.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
-            initRecyclerView();
+            if(recyclerView.getAdapter() == null) {
+                initRecyclerView();
+            }
             configAdapter(cars);
         }
         else {
