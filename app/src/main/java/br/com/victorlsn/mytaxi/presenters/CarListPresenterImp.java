@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.com.victorlsn.mytaxi.R;
 import br.com.victorlsn.mytaxi.beans.Car;
 import br.com.victorlsn.mytaxi.events.CarListPopulatedEvent;
 import br.com.victorlsn.mytaxi.interfaces.BaseMVP;
@@ -37,13 +38,13 @@ public class CarListPresenterImp implements CarListMVP.Presenter {
 
     public void requestVehicles(Context context) {
         try {
-            view.showProgressBar(true, "Retrieving information...");
+            view.showProgressBar(true, context.getString(R.string.loading_dialog));
 
             Map<String, String> coordinates = new HashMap<>();
-            coordinates.put("p1Lat", "53.694865");
-            coordinates.put("p1Lon", "9.757589");
-            coordinates.put("p2Lat", "53.394655");
-            coordinates.put("p2Lon", "10.099891");
+            coordinates.put("p1Lat", context.getString(R.string.p1_lat));
+            coordinates.put("p1Lon", context.getString(R.string.p1_lon));
+            coordinates.put("p2Lat", context.getString(R.string.p2_lat));
+            coordinates.put("p2Lon", context.getString(R.string.p2_lon));
             model.getVehicles(context, coordinates);
         }
         catch (Exception e) {
