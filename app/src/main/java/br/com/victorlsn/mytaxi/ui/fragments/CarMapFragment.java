@@ -32,6 +32,7 @@ import br.com.victorlsn.mytaxi.events.CarListPopulatedEvent;
 
 /**
  * Created by victorlsn on 27/02/19.
+ *
  */
 
 public class CarMapFragment extends BaseFragment {

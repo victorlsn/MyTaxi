@@ -4,6 +4,7 @@ import br.com.victorlsn.mytaxi.beans.Car;
 
 /**
  * Created by victorlsn on 27/02/19.
+ *
  */
 
 public class CarSelectedEvent {

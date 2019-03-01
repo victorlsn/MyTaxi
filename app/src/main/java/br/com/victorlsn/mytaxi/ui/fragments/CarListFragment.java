@@ -23,6 +23,7 @@ import butterknife.BindView;
 
 /**
  * Created by victorlsn on 27/02/19.
+ *
  */
 
 public class CarListFragment extends BaseFragment implements CarListMVP.View {

@@ -29,6 +29,7 @@ import butterknife.ButterKnife;
 
 /**
  * Created by victorlsn on 27/02/19.
+ *
  */
 
 public class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.ViewHolder> {

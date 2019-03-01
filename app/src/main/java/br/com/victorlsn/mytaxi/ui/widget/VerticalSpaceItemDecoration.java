@@ -6,6 +6,7 @@ import android.view.View;
 
 /**
  * Created by victorlsn on 27/02/19.
+ *
  */
 
 public class VerticalSpaceItemDecoration extends RecyclerView.ItemDecoration {

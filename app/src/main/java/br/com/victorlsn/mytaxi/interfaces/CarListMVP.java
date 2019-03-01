@@ -9,6 +9,7 @@ import br.com.victorlsn.mytaxi.beans.Car;
 
 /**
  * Created by victorlsn on 26/02/19.
+ *
  */
 
 public interface CarListMVP {

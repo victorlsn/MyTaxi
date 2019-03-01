@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 
 /**
  * Created by victorlsn on 27/02/19.
+ *
  */
 
 public class Car {

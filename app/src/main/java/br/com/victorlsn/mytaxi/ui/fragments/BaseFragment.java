@@ -12,6 +12,7 @@ import butterknife.ButterKnife;
 
 /**
  * Created by victorlsn on 27/02/19.
+ *
  */
 
 public abstract class BaseFragment extends Fragment {
