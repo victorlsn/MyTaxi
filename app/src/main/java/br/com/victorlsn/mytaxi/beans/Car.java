@@ -8,14 +8,14 @@ import com.google.gson.annotations.Expose;
 
 public class Car {
     @Expose
-    int id;
+    private int id;
     @Expose
-    Coordinate coordinate;
+    private Coordinate coordinate;
     @Expose
-    String fleetType;
+    private String fleetType;
     @Expose
-    double heading;
-    String estimatedAddress;
+    private double heading;
+    private String estimatedAddress;
 
     public int getId() {
         return id;
@@ -29,24 +29,12 @@ public class Car {
         return coordinate;
     }
 
-    public void setCoordinate(Coordinate coordinate) {
-        this.coordinate = coordinate;
-    }
-
     public String getFleetType() {
         return fleetType;
     }
 
-    public void setFleetType(String fleetType) {
-        this.fleetType = fleetType;
-    }
-
     public double getHeading() {
         return heading;
-    }
-
-    public void setHeading(double heading) {
-        this.heading = heading;
     }
 
     public String getEstimatedAddress() {

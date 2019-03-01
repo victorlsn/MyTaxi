@@ -29,17 +29,16 @@ public class CarListPresenterImp implements CarListMVP.Presenter {
     }
 
     @Override
-    public boolean attachView(BaseMVP.View view) {
-        if (view == null) return false;
+    public void attachView(BaseMVP.View view) {
+        if (view == null) return;
         this.view = (CarListMVP.View) view;
-        return true;
     }
 
     public void requestVehicles(Context context) {
         try {
-            view.showProgressBar(true, null);
+            view.showProgressBar(true, "Retrieving information...");
 
-            Map<String, String> coordinates = new HashMap<String, String>();
+            Map<String, String> coordinates = new HashMap<>();
             coordinates.put("p1Lat", "53.694865");
             coordinates.put("p1Lon", "9.757589");
             coordinates.put("p2Lat", "53.394655");
@@ -70,5 +69,6 @@ public class CarListPresenterImp implements CarListMVP.Presenter {
         }
         view.showProgressBar(false, null);
         view.receiveVehiclesList(null);
+        EventBus.getDefault().post(new CarListPopulatedEvent(null));
     }
 }

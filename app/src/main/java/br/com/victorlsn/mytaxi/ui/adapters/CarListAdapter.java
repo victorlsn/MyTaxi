@@ -4,6 +4,7 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -36,34 +37,28 @@ public class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.ViewHold
 
     private Context context;
 
-    private OnItemClickListener mOnItemClickListener;
     /**
      * Here is the key method to apply the animation
      */
     private int lastPosition = -1;
 
-    // Provide a suitable constructor (depends on the kind of dataset)
     public CarListAdapter(Context context, List<Car> cars) {
         this.cars = cars;
 
         this.context = context;
     }
 
-    public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
-        this.mOnItemClickListener = mItemClickListener;
-    }
-
+    @NonNull
     @Override
-    public CarListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CarListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_cars, parent, false);
         ViewHolder vh = new ViewHolder(v);
         vh.setIsRecyclable(true);
         return vh;
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         final Car car = cars.get(position);
 
         holder.id.setText(String.format("Car ID: %s", String.valueOf(car.getId())));
@@ -98,10 +93,6 @@ public class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.ViewHold
         return position;
     }
 
-    public Car getItem(int position) {
-        return cars.get(position);
-    }
-
     @Override
     public long getItemId(int position) {
         return cars.get(position).getId();
@@ -116,17 +107,12 @@ public class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.ViewHold
         }
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return cars.size();
     }
 
-    public interface OnItemClickListener {
-        void onItemClick(View view, Car obj, int position);
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.car_id_tv)
         TextView id;
         @BindView(R.id.car_address_tv)
@@ -136,20 +122,18 @@ public class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.ViewHold
         @BindView(R.id.layout_parent)
         ConstraintLayout parentLayout;
 
-        public ViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
         }
     }
 
-    // AsyncTask encapsulating the reverse-geocoding API.  Since the geocoder API is blocked,
-// we do not want to invoke it from the UI thread.
     static class ReverseGeocodingTask extends AsyncTask<Coordinate, Void, String> {
         Context context;
         ViewHolder viewHolder;
         Car car;
 
-        public ReverseGeocodingTask(Context context, ViewHolder viewHolder, Car car) {
+        ReverseGeocodingTask(Context context, ViewHolder viewHolder, Car car) {
             super();
             this.context = context;
             this.viewHolder = viewHolder;
@@ -164,7 +148,7 @@ public class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.ViewHold
                 List<Address> matches = geoCoder.getFromLocation(coordinate.getLatitude(), coordinate.getLongitude(), 1);
                 Address bestMatch = (matches.isEmpty() ? null : matches.get(0));
                 if (bestMatch != null) {
-                    return String.format("%s:\n%s%s%s%s", "Approximated address",
+                    return String.format("%s:%n%s%s%s%s", "Approximated address",
                             (bestMatch.getThoroughfare() != null ? bestMatch.getThoroughfare()+" " : ""),
                             bestMatch.getSubThoroughfare() != null ? bestMatch.getSubThoroughfare() + ", " : (bestMatch.getThoroughfare() != null ? ", " : ""),
                             bestMatch.getPostalCode() != null ? bestMatch.getPostalCode()+" " : "",

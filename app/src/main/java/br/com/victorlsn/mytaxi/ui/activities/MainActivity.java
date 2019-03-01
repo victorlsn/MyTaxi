@@ -1,11 +1,9 @@
 package br.com.victorlsn.mytaxi.ui.activities;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -55,8 +53,8 @@ public class MainActivity extends BaseActivity {
     private void setupViewPager() {
         PageFragmentAdapter adapter = new PageFragmentAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(carListFragment, "Cars List");
-        adapter.addFragment(carMapFragment, "Cars Map");
+        adapter.addFragment(carListFragment);
+        adapter.addFragment(carMapFragment);
         viewPager.setAdapter(adapter);
     }
 

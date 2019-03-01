@@ -1,7 +1,7 @@
 package br.com.victorlsn.mytaxi.models;
 
 import android.content.Context;
-import android.util.Log;
+import android.support.annotation.NonNull;
 
 import java.util.List;
 import java.util.Map;
@@ -29,7 +29,7 @@ public class CarListModelImp implements CarListMVP.Model {
         try {
             Controller.getInstance().doApiCall(context).getVehiclesList(coordinates).enqueue(new Callback<br.com.victorlsn.mytaxi.beans.Response>() {
                 @Override
-                public void onResponse(Call<br.com.victorlsn.mytaxi.beans.Response> call, Response<br.com.victorlsn.mytaxi.beans.Response> response) {
+                public void onResponse(@NonNull Call<br.com.victorlsn.mytaxi.beans.Response> call, @NonNull Response<br.com.victorlsn.mytaxi.beans.Response> response) {
                     if (response.code() == 200 && response.body() != null) {
                         List<Car> carList = response.body().getCars();
 
@@ -38,7 +38,7 @@ public class CarListModelImp implements CarListMVP.Model {
                 }
 
                 @Override
-                public void onFailure(Call<br.com.victorlsn.mytaxi.beans.Response> call, Throwable t) {
+                public void onFailure(@NonNull Call<br.com.victorlsn.mytaxi.beans.Response> call, @NonNull Throwable t) {
                     presenter.requestVehiclesFailure(t.getMessage());
                 }
             });

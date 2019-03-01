@@ -2,6 +2,7 @@ package br.com.victorlsn.mytaxi.ui.fragments;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -49,7 +50,7 @@ public class CarListFragment extends BaseFragment implements CarListMVP.View {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         initSwipeRefreshLayout();
@@ -82,31 +83,26 @@ public class CarListFragment extends BaseFragment implements CarListMVP.View {
 
     private void configAdapter(List<Car> cars) {
         adapter = new CarListAdapter(getActivity(), cars);
-//        adapter.setHasStableIds(true);
         recyclerView.setAdapter(adapter);
     }
 
     @Override
-    public boolean showProgressBar(boolean show, String message) {
-        if (show) {
+    public void showProgressBar(boolean show, String message) {
+        if (progressDialog == null && show) {
             progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setTitle("Please wait");
-            progressDialog.setMessage("Retrieving information...");
+            progressDialog.setTitle(getString(R.string.wait));
+            progressDialog.setMessage(message);
             progressDialog.setIndeterminate(true);
             progressDialog.setCancelable(false);
             progressDialog.show();
-        } else {
-            if (null != progressDialog && progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
+        } else if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
         }
-        return true;
     }
 
     @Override
-    public boolean showToast(String message, int duration) {
+    public void showToast(String message, int duration) {
         AppTools.showToast(getActivity(), message, duration);
-        return true;
     }
 
     @Override
@@ -115,12 +111,11 @@ public class CarListFragment extends BaseFragment implements CarListMVP.View {
         if (recyclerView != null && cars != null) {
             emptyStateLinearLayout.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
-            if(recyclerView.getAdapter() == null) {
+            if (recyclerView.getAdapter() == null) {
                 initRecyclerView();
             }
             configAdapter(cars);
-        }
-        else {
+        } else if (recyclerView != null) {
             recyclerView.setVisibility(View.INVISIBLE);
             emptyStateLinearLayout.setVisibility(View.VISIBLE);
         }

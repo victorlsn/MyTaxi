@@ -38,7 +38,6 @@ public class CarMapFragment extends BaseFragment {
 
     GoogleMap map;
     List<Car> carList;
-    float currentZoom = 0.0f;
 
     public CarMapFragment() {
     }
@@ -81,6 +80,7 @@ public class CarMapFragment extends BaseFragment {
 
     @Subscribe
     public void onEvent(CarListPopulatedEvent event) {
+        map.clear();
         if (event.getCarList() != null) {
             this.carList = event.getCarList();
             populateMap(carList);
@@ -88,7 +88,6 @@ public class CarMapFragment extends BaseFragment {
     }
 
     private void populateMap(List<Car> cars) {
-        map.clear();
         for (Car car : cars) {
             MarkerOptions carMarker = new MarkerOptions()
                     .position(new LatLng(car.getCoordinate().getLatitude(), car.getCoordinate().getLongitude()))
@@ -109,6 +108,7 @@ public class CarMapFragment extends BaseFragment {
 
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        assert vectorDrawable != null;
         int scaledWidth = (vectorDrawable.getIntrinsicWidth()/2);
         int scaledHeight = (vectorDrawable.getIntrinsicHeight()/2);
         vectorDrawable.setBounds(0, 0, scaledWidth, scaledHeight);

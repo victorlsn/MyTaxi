@@ -19,13 +19,12 @@ public class AppTools {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public static boolean showToast(Context context, String message, int duration) {
-        if (null == context) return false;
-        if (null == message || message.isEmpty()) return false;
-        if (duration != Toast.LENGTH_SHORT && duration != Toast.LENGTH_LONG) return false;
+    public static void showToast(Context context, String message, int duration) {
+        if (null == context) return;
+        if (null == message || message.isEmpty()) return;
+        if (duration != Toast.LENGTH_SHORT && duration != Toast.LENGTH_LONG) return;
 
         Toast.makeText(context, message, duration).show();
 
-        return false;
     }
 }

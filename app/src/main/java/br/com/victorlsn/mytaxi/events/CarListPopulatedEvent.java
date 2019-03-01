@@ -9,18 +9,13 @@ import br.com.victorlsn.mytaxi.beans.Car;
  */
 
 public class CarListPopulatedEvent {
-
     public CarListPopulatedEvent(List<Car> carList) {
         this.carList = carList;
     }
 
-    List<Car> carList;
+    private List<Car> carList;
 
     public List<Car> getCarList() {
         return carList;
-    }
-
-    public void setCarList(List<Car> carList) {
-        this.carList = carList;
     }
 }

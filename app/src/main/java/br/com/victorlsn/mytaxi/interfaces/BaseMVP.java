@@ -7,12 +7,12 @@ package br.com.victorlsn.mytaxi.interfaces;
 public interface BaseMVP {
 
     interface Presenter {
-        boolean attachView(BaseMVP.View view);
+        void attachView(View view);
     }
 
     interface View {
-        boolean showProgressBar(boolean show, String message);
+        void showProgressBar(boolean show, String message);
 
-        boolean showToast(String message, int duration);
+        void showToast(String message, int duration);
     }
 }

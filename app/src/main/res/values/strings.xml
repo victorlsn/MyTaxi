@@ -4,4 +4,6 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="loading_address">Loading address...</string>
     <string name="empty_state">Sorry, we had a problem loading the car list. Please check your connection, try again later or pull down to refresh.</string>
+    <string name="connection_error">Error retrieving list of cars. Please check your connection or try again later.</string>
+    <string name="wait">Please wait</string>
 </resources>

@@ -7,7 +7,7 @@ import br.com.victorlsn.mytaxi.beans.Car;
  */
 
 public class CarSelectedEvent {
-    Car car;
+    private Car car;
 
     public CarSelectedEvent(Car car) {
         this.car = car;
@@ -15,9 +15,5 @@ public class CarSelectedEvent {
 
     public Car getCar() {
         return car;
-    }
-
-    public void setCar(Car car) {
-        this.car = car;
     }
 }

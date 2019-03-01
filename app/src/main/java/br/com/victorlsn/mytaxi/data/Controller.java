@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import java.util.concurrent.TimeUnit;
 
+import br.com.victorlsn.mytaxi.R;
 import br.com.victorlsn.mytaxi.interfaces.AppRestEndpoint;
 import br.com.victorlsn.mytaxi.util.AppTools;
 import okhttp3.OkHttpClient;
@@ -20,8 +21,6 @@ public class Controller {
     private static Controller instance = null;
     private AppRestEndpoint apiCall;
 
-    String BASE_URL = "https://fake-poi-api.mytaxi.com/";
-
     private Controller() {
 
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient
@@ -32,6 +31,7 @@ public class Controller {
         OkHttpClient client = okHttpBuilder.build();
 
 
+        String BASE_URL = "https://fake-poi-api.mytaxi.com/";
         Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
@@ -53,7 +53,7 @@ public class Controller {
             return apiCall;
         }
         else {
-            AppTools.showToast(context, "Blablabla connection blablabla.", Toast.LENGTH_LONG);
+            AppTools.showToast(context, context.getString(R.string.connection_error), Toast.LENGTH_LONG);
             return null;
         }
     }
