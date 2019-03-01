@@ -9,4 +9,5 @@
     <string name="p1_lon">9.757589</string>
     <string name="p2_lat">53.394655</string>
     <string name="p2_lon">10.099891</string>
+    <string name="error_address">Unfortunately, some error occurred while trying to retrieve the approximated address.</string>
 </resources>

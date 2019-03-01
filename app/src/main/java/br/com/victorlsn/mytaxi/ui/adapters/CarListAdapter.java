@@ -151,7 +151,7 @@ public class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.ViewHold
                 if (bestMatch != null) {
                     return String.format("%s:%n%s%s%s%s", "Approximated address",
                             (bestMatch.getThoroughfare() != null ? bestMatch.getThoroughfare()+" " : ""),
-                            bestMatch.getSubThoroughfare() != null ? bestMatch.getSubThoroughfare() + ", " : (bestMatch.getThoroughfare() != null ? ", " : ""),
+                            (bestMatch.getSubThoroughfare() != null) ? (bestMatch.getSubThoroughfare() + ", ") : bestMatch.getThoroughfare() != null ? ", " : "",
                             bestMatch.getPostalCode() != null ? bestMatch.getPostalCode()+" " : "",
                             bestMatch.getAdminArea() != null ? bestMatch.getAdminArea() : "");
                 }
@@ -166,8 +166,13 @@ public class CarListAdapter extends RecyclerView.Adapter<CarListAdapter.ViewHold
         @Override
         protected void onPostExecute(String address) {
             super.onPostExecute(address);
-            car.setEstimatedAddress(address);
-            viewHolder.address.setText(address);
+            if (address != null) {
+                car.setEstimatedAddress(address);
+                viewHolder.address.setText(address);
+            }
+            else {
+                viewHolder.address.setText(R.string.error_address);
+            }
         }
     }
 
