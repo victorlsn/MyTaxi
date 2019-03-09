@@ -23,7 +23,7 @@ import br.com.victorlsn.mytaxi.models.CarListModelImp;
  */
 
 public class CarListPresenterImp implements CarListMVP.Presenter {
-    private CarListMVP.Model model;
+    public CarListMVP.Model model;
     private CarListMVP.View view;
 
     public CarListPresenterImp() {

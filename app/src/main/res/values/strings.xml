@@ -10,4 +10,5 @@
     <string name="p2_lat">53.394655</string>
     <string name="p2_lon">10.099891</string>
     <string name="error_address">Unfortunately, some error occurred while trying to retrieve the approximated address.</string>
+    <string name="click_back_again">Please click back again to exit</string>
 </resources>

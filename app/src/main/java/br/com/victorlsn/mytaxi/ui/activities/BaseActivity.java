@@ -6,6 +6,8 @@ import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import br.com.victorlsn.mytaxi.R;
+import br.com.victorlsn.mytaxi.util.AppTools;
 import butterknife.ButterKnife;
 
 /**
@@ -33,7 +35,7 @@ public class BaseActivity extends AppCompatActivity {
         }
 
         this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Please click back again to exit", Toast.LENGTH_SHORT).show();
+        AppTools.showToast(this, getString(R.string.click_back_again), Toast.LENGTH_SHORT);
 
         new Handler().postDelayed(new Runnable() {
 
