@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">MyTaxi</string>
-    <string name="loading_address">Loading address...</string>
-    <string name="empty_state">Sorry, we had a problem loading the car list. Please check your connection, try again later or pull down to refresh.</string>
-    <string name="connection_error">Error retrieving list of cars. Please check your connection or try again later.</string>
+    <string name="loading_address">Loading address…</string>
+    <string name="empty_state">Sorry, we had a problem loading the scooter list. Please check your connection, try again later or pull down to refresh.</string>
+    <string name="connection_error">Error retrieving list of scooters. Please check your connection or try again later.</string>
     <string name="wait">Please wait</string>
-    <string name="loading_dialog">Retrieving information...</string>
+    <string name="loading_dialog">Retrieving information…</string>
     <string name="p1_lat">53.694865</string>
     <string name="p1_lon">9.757589</string>
     <string name="p2_lat">53.394655</string>
